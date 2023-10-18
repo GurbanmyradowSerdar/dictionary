@@ -4,31 +4,25 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sozluk</title>
+    <title>Словарь</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   </head>
   <body>
     <div class="box">
-      <h1 class="box__title">Sozluk</h1>
-      <input
-        type="text"
-        class="box__input"
-        id="search"
-        placeholder="Search..."
-        onchange="change()"
-      />
-      <button
-        class="box__button"
-        type="submit"
-        id="button"
-        onclick="buttonClick()"
-      >
-        Submit
-      </button>
+      <h1 class="box__title">RU-TM</h1>
+      <div class="form-group">
+        <input
+          class="form-field"
+          type="text"
+          id="search-input"
+          placeholder="ex. salam"
+        />
+        <span id="search-button">Search</span>
+      </div>
       <div class="box__translate" id="translateBlock"></div>
     </div>
-    <script src="js/definitions.js"></script>
+    <script src="js/dictionary.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>

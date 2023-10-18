@@ -2,61 +2,71 @@ let wordList = words.split("\n");
 
 const translateCont = document.getElementById("translateBlock");
 
-// loadng
+//! loadng
 let loading = document.createElement("h4");
 loading.innerHTML = "Loading...";
+loading.className = "loading";
+let input = document.getElementById("search-input"),
+  searchBtn = document.getElementById("search-button");
 
-// click the button SUBMIT
-function buttonClick() {
-  let input = document.getElementById("search").value;
-
-  if (input.trim().length <= 0) {
-    translateCont.innerHTML = "";
-    translateCont.appendChild(loading);
-    setTimeout(() => {
-      showAll();
-    }, 2000);
+//! click the button SUBMIT
+function searchWord() {
+  if (input.value.trim().length <= 0) {
+    input.style.cssText = `border-color : red`;
+    searchBtn.style.cssText = `border-color : red; background-color : red; color : white`;
   } else {
+    input.style.cssText = null;
+    searchBtn.style.cssText = null;
+    input.disabled = true;
     translateCont.innerHTML = "";
     translateCont.appendChild(loading);
     setTimeout(() => {
-      findWord(input);
+      findWord(input.value);
+      input.value = "";
+      input.disabled = false;
+
+      // ! adding wave effect in click
+      for (const card of translateCont.children) {
+        card.addEventListener("click", createRipple);
+      }
     }, 2000);
   }
 }
 
-// Show all words in dictionory
-function showAll() {
-  translateCont.removeChild(loading);
-  wordList.forEach((word, index) => {
-    let tm = word.split("-")[0];
-    let ru = word.split("-")[1];
-    if (ru === undefined) {
-      console.log(tm, ru);
-    }
-    addElement(tm, ru);
-  });
-}
+// ! search events handlers
+input.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    searchWord();
+  }
+});
+searchBtn.onclick = searchWord;
 
-// Add words in dictionary in translate block
+//! Add words in dictionary in translate block
 function addElement(tm, ru) {
-  let tmBlock = document.createElement("h3");
-  tmBlock.style.color = "green";
-  tmBlock.innerHTML = tm;
-  translateCont.appendChild(tmBlock);
-
-  let ruBlock = document.createElement("ul");
   let ruArray = ru.split(";");
-  translateCont.appendChild(ruBlock);
+  let card = document.createElement("div"),
+    container = document.createElement("div"),
+    h4 = document.createElement("h4"),
+    ul = document.createElement("ul");
 
-  ruArray.forEach((word, index) => {
+  ul.className = "card-list";
+  container.className = "container";
+  card.className = "card";
+
+  ruArray.forEach((word) => {
     let ruItem = document.createElement("li");
+    ruItem.className = "list-item";
     ruItem.innerHTML = word;
-    ruBlock.appendChild(ruItem);
+    ul.appendChild(ruItem);
   });
+
+  h4.innerHTML = tm;
+  container.append(h4, ul);
+  card.append(container);
+  translateCont.append(card);
 }
 
-// find the users word
+//! find the users word
 function findWord(query) {
   let isFound = false;
   wordList.forEach((word, i) => {
@@ -75,18 +85,40 @@ function findWord(query) {
   if (!isFound) {
     let img = document.createElement("img");
     img.src = "error.png";
-    img.style.width = "100px";
-    img.style.height = "100px";
-    img.style.objectFit = "contain";
+    img.style.cssText = `width : 100px; height : 100px; object-fit : contain`;
     translateCont.appendChild(img);
   }
   translateCont.removeChild(loading);
 }
 
-// if user clear the word but didnt press the button
-function change() {
-  let input = document.getElementById("search").value;
-  if (input.trim().length <= 0) {
-    translateCont.innerHTML = "";
+// ! ripple effect (wave)
+function createRipple(event) {
+  const card = event.currentTarget;
+  const cardClassName = card.className;
+  for (const item of card.parentNode.children) {
+    item.className = "card";
   }
+
+  if (cardClassName === "card-full") {
+    card.className = "card";
+  } else {
+    card.className = "card-full";
+  }
+
+  const circle = document.createElement("span");
+  const diameter = Math.max(card.clientWidth, card.clientHeight);
+  const radius = diameter / 2;
+
+  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.left = `${event.clientX - card.offsetLeft - radius}px`;
+  circle.style.top = `${event.clientY - card.offsetTop - radius}px`;
+  circle.classList.add("ripple-effect");
+
+  const ripple = card.getElementsByClassName("ripple-effect")[0];
+
+  if (ripple) {
+    ripple.remove();
+  }
+
+  card.appendChild(circle);
 }

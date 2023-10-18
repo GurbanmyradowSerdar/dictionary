@@ -3,6 +3,8 @@
   padding: 0;
   margin: 0;
   border: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
 *,
@@ -11,6 +13,25 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+:root {
+  --input-color: #99a3ba;
+  --input-border: #cdd9ed;
+  --input-background: #fff;
+  --input-placeholder: #cbd1dc;
+
+  --input-border-focus: #275efe;
+
+  --group-color: var(--input-color);
+  --group-border: var(--input-border);
+  --group-background: #eef4ff;
+
+  --group-color-focus: #fff;
+  --group-border-focus: var(--input-border-focus);
+  --group-background-focus: #678efe;
+}
+
+/* ! nullish and vars end */
 html {
   font-size: 16px;
 }
@@ -24,48 +45,184 @@ html {
     font-size: 10px;
   }
 }
+
 body {
-  background: #333;
-  color: #fff;
+  background: #ccd9ea;
+  color: #171717;
   font-size: 1.9rem;
 }
-
 .box {
-  max-width: 80%;
+  max-width: 90%;
   margin: 100px auto 0 auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  gap: 20px;
 }
 .box__title {
   font-size: 3rem;
-  margin: 0 0 30px 0;
-}
-.box__input {
-  background: rgb(44, 201, 212);
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 2rem;
-  outline: none;
-}
-
-.box__button {
-  padding: 10px;
-  margin: 15px 0 0 0;
-  border-radius: 10px;
-  font-size: 1.8rem;
-  cursor: pointer;
+  align-self: center;
 }
 .box__translate {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 40px 0 40px 0;
+  gap: 20px;
+  position: relative;
+}
+
+/* ! input start */
+
+.form-field {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  line-height: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  border-radius: 6px;
+  appearance: none;
+  color: var(--group-background-focus);
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  transition: border 0.3s ease;
+  &::placeholder {
+    color: var(--input-placeholder);
+  }
+  &:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+  }
+}
+
+.form-group {
+  position: relative;
+  display: flex;
+  width: 400px;
+  align-self: center;
+  & > span,
+  .form-field {
+    white-space: nowrap;
+    display: block;
+    &:not(:first-child):not(:last-child) {
+      border-radius: 0;
+    }
+    &:first-child {
+      border-radius: 6px 0 0 6px;
+    }
+    &:last-child {
+      border-radius: 0 6px 6px 0;
+    }
+    &:not(:first-child) {
+      margin-left: -1px;
+    }
+  }
+  .form-field {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+    width: 1%;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  & > span {
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 25px;
+    color: var(--group-color);
+    background: var(--group-background);
+    border: 1px solid var(--group-border);
+    transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+  }
+  &:focus-within {
+    & > span {
+      color: var(--group-color-focus);
+      background: var(--group-background-focus);
+      border-color: var(--group-border-focus);
+    }
+  }
+}
+
+/* ! input end */
+
+/* ! card start */
+
+.card {
+  position: relative;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background: rgb(239, 239, 239);
+  border-radius: 8px;
+  height: 200px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: all 400ms;
+}
+
+.card-full {
+  position: relative;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background: rgb(239, 239, 239);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: all 400ms;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  padding: 4px 18px;
   display: flex;
   flex-direction: column;
-  margin: 40px 0 40px 0;
+  gap: 10px;
 }
+
+.container h4 {
+  font-size: 1.2em;
+}
+
+.list-item {
+  margin-left: 30px;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.8em;
+}
+
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background-color: rgba(180, 180, 180, 0.7);
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ! card end */
+
+/* ! loading  */
+
+.loading {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ! loading  */
