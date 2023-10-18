@@ -35,6 +35,11 @@
 html {
   font-size: 16px;
 }
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 13px;
+  }
+}
 @media screen and (max-width: 768px) {
   html {
     font-size: 12px;
@@ -60,7 +65,7 @@ body {
   gap: 20px;
 }
 .box__title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   align-self: center;
 }
 .box__translate {
@@ -69,6 +74,17 @@ body {
   margin: 40px 0 40px 0;
   gap: 20px;
   position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .box__translate {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media screen and (max-width: 600px) {
+  .box__translate {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ! input start */
@@ -143,6 +159,17 @@ body {
       background: var(--group-background-focus);
       border-color: var(--group-border-focus);
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form-group {
+    width: 300px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .form-group {
+    width: 250px;
   }
 }
 

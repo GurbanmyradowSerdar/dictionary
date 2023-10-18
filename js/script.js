@@ -85,7 +85,8 @@ function findWord(query) {
   if (!isFound) {
     let img = document.createElement("img");
     img.src = "error.png";
-    img.style.cssText = `width : 100px; height : 100px; object-fit : contain`;
+    img.style.cssText = `width : 100px; height : 100px; object-fit : contain;
+    position : absolute; top : 0; left : 50%; transform: translateX(-50%);`;
     translateCont.appendChild(img);
   }
   translateCont.removeChild(loading);
